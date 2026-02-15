@@ -1,0 +1,142 @@
+[
+    {
+        "amount": -10.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -25.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -65.0,
+        "category": "Food",
+        "date": "2026-01-04",
+        "type": "Withdrawal",
+        "description": "Test"
+    },
+    {
+        "amount": 50.0,
+        "category": "Transport",
+        "date": "2026-01-16",
+        "type": "Deposit",
+        "description": "Deposit"
+    },
+    {
+        "amount": -50.0,
+        "category": "Transport",
+        "date": "2026-01-20",
+        "type": "Withdrawal",
+        "description": "Transport"
+    },
+    {
+        "amount": -10.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -25.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -65.0,
+        "category": "Food",
+        "date": "2026-01-04",
+        "type": "Withdrawal",
+        "description": "Test"
+    },
+    {
+        "amount": 50.0,
+        "category": "Transport",
+        "date": "2026-01-16",
+        "type": "Deposit",
+        "description": "Deposit"
+    },
+    {
+        "amount": -50.0,
+        "category": "Transport",
+        "date": "2026-01-20",
+        "type": "Withdrawal",
+        "description": "Transport"
+    },
+    {
+        "amount": -10.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -25.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -65.0,
+        "category": "Food",
+        "date": "2026-01-04",
+        "type": "Withdrawal",
+        "description": "Test"
+    },
+    {
+        "amount": 50.0,
+        "category": "Transport",
+        "date": "2026-01-16",
+        "type": "Deposit",
+        "description": "Deposit"
+    },
+    {
+        "amount": -50.0,
+        "category": "Transport",
+        "date": "2026-01-20",
+        "type": "Withdrawal",
+        "description": "Transport"
+    },
+    {
+        "amount": -10.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -25.0,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "Withdrawal",
+        "description": ""
+    },
+    {
+        "amount": -65.0,
+        "category": "Food",
+        "date": "2026-01-04",
+        "type": "Withdrawal",
+        "description": "Test"
+    },
+    {
+        "amount": 50.0,
+        "category": "Transport",
+        "date": "2026-01-16",
+        "type": "Deposit",
+        "description": "Deposit"
+    },
+    {
+        "amount": -50.0,
+        "category": "Transport",
+        "date": "2026-01-20",
+        "type": "Withdrawal",
+        "description": "Transport"
+    }
+]

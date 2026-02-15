@@ -62,6 +62,10 @@ class Category:
 
     @property
     def budget(self):
+        return self._budget
+
+    @property
+    def formatted_budget(self):
         return f"${self._budget:.2f}"
     
     @budget.setter
@@ -75,9 +79,9 @@ class Category:
     def add_transaction(self, transaction):
         if transaction.type == "Withdrawal":
             # Check if withdraw amount is less than category budget:
-            if abs(transaction.amount) <= self._budget:
+            if abs(transaction._amount) <= self._budget:
                 self.transactions.append(transaction.to_dict())
-                self.budget += transaction.amount
+                self._budget += transaction._amount
             else:
                 print(f"Transaction amount of {transaction.amount} exceeds budget ({self.budget}).\nTransaction has been cancelled...")
                 # while abs(transaction.amount) > self.budget:
@@ -85,7 +89,7 @@ class Category:
          
         elif transaction.type == "Deposit":
             self.transactions.append(transaction.to_dict())
-            self.budget += transaction.amount
+            self._budget += transaction._amount
 
         else:
             print("Invalid Transaction Type.\nTransaction has been cancelled...")
@@ -97,5 +101,5 @@ class Category:
 
     def to_csv(self):
         df = pd.DataFrame(self.transactions)
-        df.to_csv("transactions.csv", index=False)
+        df.to_csv("C:\\Users\\Taha\\OneDrive\\Bureau\\Expense Tracker\\data\\transactions.csv", index=False)
         print("transactions.csv has been updated successfully!")
