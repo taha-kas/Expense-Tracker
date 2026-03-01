@@ -1,5 +1,11 @@
 from db.database import create_user
 
+"""
+    This script is used to seed the database with test users. 
+    It creates a few sample users with predefined credentials for testing purposes.
+    Feel free to modify the user data as needed for your testing scenarios.
+"""
+
 def seed_users():
     print("Seeding test users...\n")
 
