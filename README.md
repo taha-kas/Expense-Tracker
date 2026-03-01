@@ -115,8 +115,8 @@ expense_manager/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/expense-manager.git
-cd expense-manager
+git clone https://github.com/taha-kas/Expense-Tracker.git
+cd Expense-Tracker
 ```
 
 2. Install dependencies:
@@ -124,7 +124,7 @@ cd expense-manager
 pip install -r requirements.txt
 ```
 
-3. Set up your environment variables — create a `.env` file in the project root using `.env.example` as a template:
+3. Set up your environment variables — create a `.env` file in the git folder using `.env.example` as a template:
 ```
 DB_HOST=localhost
 DB_USER=your_mysql_user
