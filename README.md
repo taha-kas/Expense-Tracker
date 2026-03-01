@@ -40,17 +40,18 @@ expense_manager/
 │   ├── transaction.py            # Transaction class
 │   └── user.py                   # User class
 │
+├── git/
+│   ├── .env                      # Local credentials (never pushed to GitHub)       
+│   ├── .env.example              # Template for environment variables
+│   └── .gitignore
+│
 ├── ui/
 │   ├── login_page.py             # Login screen
 │   ├── signup_page.py            # Signup screen
 │   ├── dashboard_view.py         # Category overview (main dashboard)
 │   └── category_detail_view.py   # Transaction management per category
 │
-├── main.py                       # App entry point and route management
-├── requirements.txt              # Python dependencies
-├── .env                          # Local credentials (never pushed to GitHub)
-├── .env.example                  # Template for environment variables
-└── .gitignore
+└── main.py                       # App entry point and route management
 ```
 
 ---
