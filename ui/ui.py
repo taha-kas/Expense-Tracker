@@ -77,6 +77,13 @@ def main_ui(page: ft.Page):
 
     description_field = ft.TextField(label="Description", width=300)
 
+    '''
+        For some reason which I somehow can't figure out, the date picker isn't fully functional:
+        When picking today's date or any date before it, the TextLine displays the date before. So basically if I were to
+        pick the 14th of February (today is the 15th), the date field would show 2026-02-13, but if I were to select any date after, it would be displayed as is.
+        I don't know why that is but I'll look into it later on when I finish the remainder of the project. 
+    '''
+
     date_picker = ft.DatePicker()
     page.overlay.append(date_picker)
 
