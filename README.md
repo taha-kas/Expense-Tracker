@@ -40,17 +40,18 @@ expense_manager/
 │   ├── transaction.py            # Transaction class
 │   └── user.py                   # User class
 │
+├── git/
+│   ├── .env                      # Local credentials (never pushed to GitHub)       
+│   ├── .env.example              # Template for environment variables
+│   └── .gitignore
+│
 ├── ui/
 │   ├── login_page.py             # Login screen
 │   ├── signup_page.py            # Signup screen
 │   ├── dashboard_view.py         # Category overview (main dashboard)
 │   └── category_detail_view.py   # Transaction management per category
 │
-├── main.py                       # App entry point and route management
-├── requirements.txt              # Python dependencies
-├── .env                          # Local credentials (never pushed to GitHub)
-├── .env.example                  # Template for environment variables
-└── .gitignore
+└── main.py                       # App entry point and route management
 ```
 
 ---
@@ -115,8 +116,8 @@ expense_manager/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/expense-manager.git
-cd expense-manager
+git clone https://github.com/taha-kas/Expense-Tracker.git
+cd Expense-Tracker
 ```
 
 2. Install dependencies:
@@ -124,7 +125,7 @@ cd expense-manager
 pip install -r requirements.txt
 ```
 
-3. Set up your environment variables — create a `.env` file in the project root using `.env.example` as a template:
+3. Set up your environment variables — create a `.env` file in the git folder using `.env.example` as a template:
 ```
 DB_HOST=localhost
 DB_USER=your_mysql_user
