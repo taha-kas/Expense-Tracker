@@ -1,9 +1,10 @@
 import mysql.connector
-from src.expense_manager import Category
+from src.category import Category
 from src.user import User
 import bcrypt
 from dotenv import load_dotenv
 import os
+import datetime
 
 load_dotenv()
 
@@ -19,22 +20,36 @@ mycursor = db.cursor()
 
 ######################### Database Operations for Category #########################
 
-def create_category(user_id, name, budget):
+def create_category(user_id, name, category_type, budget=None):
+    """
+    Creates a new category.
+    - category_type: 'income' or 'spending'
+    - budget: required for spending, always None for income
+    """
+    if category_type == 'spending' and (budget is None or float(budget) <= 0):
+        return None, "Spending categories must have a budget greater than zero."
+
+    if category_type == 'income':
+        budget = None
+
     query = """
-        INSERT INTO category (user_id, category_name, budget)
-        VALUES (%s, %s, %s)
+        INSERT INTO category (user_id, category_name, category_type, budget)
+        VALUES (%s, %s, %s, %s)
     """
     try:
-        mycursor.execute(query, (user_id, name, budget))
+        mycursor.execute(query, (user_id, name, category_type, budget))
         db.commit()
-        return Category(user_id, name, mycursor.lastrowid, budget), None
+        return Category(user_id, name, mycursor.lastrowid, category_type, budget), None
     except mysql.connector.Error as err:
         if err.errno == 1062:
             return None, "A category with this name already exists."
         else:
             return None, f"Database error: {err}"
 
+
 def update_category_budget(category_id, new_budget):
+    if new_budget is not None and float(new_budget) <= 0:
+        return "Budget must be greater than zero."
     query = """
         UPDATE category
         SET budget = %s
@@ -43,12 +58,14 @@ def update_category_budget(category_id, new_budget):
     try:
         mycursor.execute(query, (new_budget, category_id))
         db.commit()
+        return None
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        return f"Database error: {err}"
+
 
 def update_category_name(category_id, new_name):
     query = """
-        UPDATE Category
+        UPDATE category
         SET category_name = %s
         WHERE category_id = %s
     """
@@ -57,6 +74,7 @@ def update_category_name(category_id, new_name):
         db.commit()
     except mysql.connector.Error as err:
         print(f"Error: {err}")
+
 
 def soft_delete_category_db(category_id):
     query = """
@@ -70,6 +88,7 @@ def soft_delete_category_db(category_id):
     except mysql.connector.Error as err:
         print(f"Error: {err}")
 
+
 def restore_category_db(category_id):
     query = """
         UPDATE category
@@ -82,17 +101,20 @@ def restore_category_db(category_id):
     except mysql.connector.Error as err:
         print(f"Error: {err}")
 
+
 def get_categories_by_user(user_id):
     query = """
-        SELECT category_id, category_name, budget, is_active
+        SELECT category_id, category_name, category_type, budget, is_active
         FROM category
         WHERE user_id = %s
     """
     mycursor.execute(query, (user_id,))
-    categories = mycursor.fetchall()
-    return [Category(user_id, name, cat_id, budget, is_active) for cat_id, name, budget, is_active in categories]
+    rows = mycursor.fetchall()
+    return [
+        Category(user_id, name, cat_id, cat_type, budget, is_active)
+        for cat_id, name, cat_type, budget, is_active in rows
+    ]
 
-################################## End of Database Operations for Category #########################
 
 ################################## Database Operations for User ##################################
 
@@ -106,6 +128,7 @@ def validate_password(password):
     if not any(char in set("!@#$%^&*()-_=+[]{|};:'\",.<>?/") for char in password):
         return "Password must contain at least one special character."
     return None
+
 
 def create_user(username, email, password, birthday):
     email = email.lower().strip()
@@ -131,6 +154,7 @@ def create_user(username, email, password, birthday):
         else:
             return None, f"Database error: {err}"
 
+
 def get_user_by_email(email):
     query = """
         SELECT user_id, username, email, psswd_hash, bday, is_active
@@ -144,6 +168,7 @@ def get_user_by_email(email):
         return User(user_id, username, email, password_hash, birthday, is_active)
     return None
 
+
 def get_user_by_name(username):
     query = """
         SELECT user_id, username, email, psswd_hash, bday, is_active
@@ -156,6 +181,7 @@ def get_user_by_name(username):
         user_id, username, email, password_hash, birthday, is_active = result
         return User(user_id, username, email, password_hash, birthday, is_active)
     return None
+
 
 def update_user_email(user_id, new_email):
     new_email = new_email.lower().strip()
@@ -173,6 +199,7 @@ def update_user_email(user_id, new_email):
         else:
             print(f"Error: {err}")
 
+
 def update_username(user_id, new_username):
     new_username = new_username.strip()
     query = """
@@ -188,6 +215,7 @@ def update_username(user_id, new_username):
             print("Username already exists.")
         else:
             print(f"Error: {err}")
+
 
 def update_user_password(user_id, new_password):
     error = validate_password(new_password)
@@ -207,6 +235,21 @@ def update_user_password(user_id, new_password):
     except mysql.connector.Error as err:
         return f"Database error: {err}"
 
+
+def update_user_birthday(user_id, new_birthday):
+    query = """
+        UPDATE user
+        SET bday = %s
+        WHERE user_id = %s
+    """
+    try:
+        mycursor.execute(query, (new_birthday, user_id))
+        db.commit()
+        return None
+    except mysql.connector.Error as err:
+        return f"Database error: {err}"
+
+
 def soft_delete_user(user_id):
     query = """
         UPDATE user
@@ -219,19 +262,17 @@ def soft_delete_user(user_id):
     except mysql.connector.Error as err:
         print(f"Error: {err}")
 
-################################## End of Database Operations for User ##################################
-
 
 ################################## Database Operations for Transaction ##################################
 
 from src.transaction import Transaction
+
 
 def create_transaction(category_id, amount, transaction_type, date=None, description=""):
     query = """
         INSERT INTO `Transaction` (category_id, amount, type, transaction_date, description)
         VALUES (%s, %s, %s, %s, %s)
     """
-    import datetime
     transaction_date = date if date else datetime.datetime.now().strftime("%Y-%m-%d")
 
     try:
@@ -240,6 +281,7 @@ def create_transaction(category_id, amount, transaction_type, date=None, descrip
         return Transaction(mycursor.lastrowid, category_id, amount, transaction_type, transaction_date, description), None
     except mysql.connector.Error as err:
         return None, f"Database error: {err}"
+
 
 def get_transactions_by_category(category_id):
     query = """
@@ -254,6 +296,7 @@ def get_transactions_by_category(category_id):
         Transaction(tid, cat_id, amount, ttype, date, desc or "", created_at)
         for tid, cat_id, amount, ttype, date, desc, created_at in rows
     ]
+
 
 def update_transaction_amount(transaction_id, new_amount):
     if new_amount <= 0:
@@ -270,6 +313,7 @@ def update_transaction_amount(transaction_id, new_amount):
     except mysql.connector.Error as err:
         return f"Database error: {err}"
 
+
 def update_transaction_description(transaction_id, new_description):
     query = """
         UPDATE `Transaction`
@@ -282,6 +326,7 @@ def update_transaction_description(transaction_id, new_description):
         return None
     except mysql.connector.Error as err:
         return f"Database error: {err}"
+
 
 def update_transaction_date(transaction_id, new_date):
     query = """
@@ -296,6 +341,7 @@ def update_transaction_date(transaction_id, new_date):
     except mysql.connector.Error as err:
         return f"Database error: {err}"
 
+
 def delete_transaction(transaction_id):
     query = """
         DELETE FROM `Transaction`
@@ -307,5 +353,3 @@ def delete_transaction(transaction_id):
         return None
     except mysql.connector.Error as err:
         return f"Database error: {err}"
-
-################################## End of Database Operations for Transaction ##################################

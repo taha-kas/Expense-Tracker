@@ -12,7 +12,7 @@ def seed_users():
     users = [
         ("john_doe", "john@example.com", "John123!", "1998-05-12"),
         ("alice_smith", "alice@example.com", "Alice456!", "2000-09-23"),
-        ("bob_wilson", "bob@example.com", "Bob789!", "1995-01-30"),
+        ("bob_wilson", "bob@example.com", "Bob7890!", "1995-01-30"),
     ]
 
     for username, email, password, birthday in users:
